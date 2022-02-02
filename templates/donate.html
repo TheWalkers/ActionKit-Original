@@ -843,6 +843,19 @@
     function three_step_advance() {
         // trigger validation on the step we're leaving
         var current_step = $('input[name="ak-donate-step"]:checked').val();
+	// hitting "back" after donating confuses our step navigation.
+	// User gets dropped on first step, then browser autocomplete sets our step tracker field without us knowing.
+	// So, check what step the UI's on, and if step tracker and UI disagree give precedence to the UI.
+	var currentStepUI = $('div.ak-donate-area-step-1,div.ak-donate-area-step-2,div.ak-donate-area-step-3').filter(':visible');
+	if(currentStepUI.length){
+	    var uiStepNum = currentStepUI.attr('class')
+		.match(/ak-donate-area-step-[0-9]/g)[0]
+		.slice(-1);
+	    if(uiStepNum != current_step){
+		$('input[name=ak-donate-step][value=' + uiStepNum + ']').prop('checked', true);
+		current_step = uiStepNum;
+	    }
+	}
         validate_step(current_step);
 
         if (!step_has_errors) {

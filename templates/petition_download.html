@@ -9,7 +9,7 @@
 <script>
     function showStatus(details) {
         if ( details.status == 'error' ) {
-            var error = status.details.error.replace(/\n/g, '<br>');
+            var error = details.error.replace(/\n/g, '<br>');
             $('#task-status').addClass('ak-err').html(
                 'Error: ' + (error || generic_error)
             );

@@ -7,7 +7,7 @@
                 {% if translated_page.id == page.id %}
                     <span class="disabled-lang">{{ translated_page.lang.name|default:"English" }}</span>
                 {% else %}
-                    <a class="lang" href="{{ translated_page.derived.canonical_path }}">{{ translated_page.lang.name|default:"English" }}</a>
+                    <a class="lang" href="{{ translated_page.derived.canonical_path }}{% for name, value in args.items %}{% if forloop.first %}?{{ name }}={{ value }}{% else %}&{{ name }}={{ value }}{% endif %}{% endfor %}">{{ translated_page.lang.name|default:"English" }}</a>
                 {% endif %}
                 {% if not forloop.last %}
                     &bull;
