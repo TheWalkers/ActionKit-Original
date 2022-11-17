@@ -1300,12 +1300,17 @@
         /* clear paypal=1 hidden field, only needed if someone hit back */
         $('#ak-pay-by-paypal').val(0);
 
+        if ($('button.ak-submit-button').hasClass('is-submitted')) {
+            return false
+        }
+
         if ( $('form.ak-donate-three-step').length > 0 ) {
             validate_step("3");
 
             if (step_has_errors) {
                 return false;
             } else {
+                $('button.ak-submit-button').addClass('is-submitted');
                 return true;
             }
         }
@@ -1318,12 +1323,19 @@
         results = [step_1_validation(),
                    step_2_validation(),
                    step_3_validation()];
-        return !(results[0] || results[1] || results[2]);
+        var ok = !(results[0] || results[1] || results[2]);
+        if (ok) {
+            $('button.ak-submit-button').addClass('is-submitted');
+        }
+        return ok
     }
 
     $( function () {
         $('#ak-paypal-button').on('click', submit_paypal);
     	$('.ak-submit-button').on('click', submit_cc);
+        $(window).on('pagehide', function() {
+            $('button.ak-submit-button').removeClass('is-submitted');
+        });
 
         {% if page.paypal_user_requirements == "none" %}
         $('#ak-paypal-button').on('mousedown', function () {
