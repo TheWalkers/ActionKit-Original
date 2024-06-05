@@ -1473,8 +1473,6 @@ $(function() {
         actionkit.forms.onValidationErrors(actionkit.errors);
     };
 
-{% if page.use_3d_secure and page.use_account_switcher %}
-    {# get client token from context for appropriate currency #}
     let braintreeInitialized = false;
 
     function initFromContext() {
@@ -1484,11 +1482,12 @@ $(function() {
         }
     }
 
-    $(actionkit.form).bind("actionkit.ready", initFromContext);
+    $(actionkit.form).on("actionkit.ready", initFromContext);
     if (actionkit.context) {
         initFromContext();
     }
 
+{% if page.use_3d_secure and page.use_account_switcher %}
     function reloadWithFormData() {
         if (actionkit.forms.prefilling) {
             return;
@@ -1514,9 +1513,6 @@ $(function() {
         window.location.search = qs.toString();
     }
     $(":input[name=payment_account]").bind("change", reloadWithFormData);
-
-{% else %}
-    actionkit.donations.initClient('{{ pp.client_token }}', options);
 {% endif %}
 
     // read by 3-step validation
