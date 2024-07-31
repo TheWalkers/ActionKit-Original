@@ -1470,6 +1470,8 @@ $(function() {
           default:
                 actionkit.errors['card_num:invalid'] = "An error occurred: " + err.message;
         }
+
+        $("button.ak-submit-button").removeClass("is-submitted");
         actionkit.forms.onValidationErrors(actionkit.errors);
     };
 
