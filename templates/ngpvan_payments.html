@@ -1,0 +1,42 @@
+{% extends "./wrapper.html" %}
+
+{% block css_additions %}
+    {{ super }}
+    {{ templateset.custom_fields.payments_css|safe }}
+{% endblock %}
+
+{% block script_additions %}
+    {{ super }}
+    {{ templateset.custom_fields.payments_script|safe }}
+{% endblock %}
+
+{% block content %}
+<form id="act" name="act" class="ngpvan-payments" method="POST" action="/act/" accept-charset="utf-8">
+    <input type="hidden" name="page" value="{{ page.name }}">
+    <input type="hidden" name="orig_akid" value="{{ akid }}">
+
+    <div id="payments-secured" class="ak-grid-row">
+        <div class="ak-grid-col ak-grid-col-12-of-12">
+            <div class="ak-secured-by">
+                <img src="/media/lock.svg" height="12" width="10.5">
+                <p>Secured by ActionKit</p>
+            </div>
+        </div>
+    </div> 
+    <div id="payments-content" class="ak-grid-row">
+        <div class="ak-grid-col ak-grid-col-4-of-12">
+            <h2>{{ page.title }}</h2>
+            {% if page.custom_fields.featured_image %}
+            <img class="ak-featured-img" src="{{page.custom_fields.featured_image}}">
+            {% endif %}
+            <div>{% include "./progress_meter.html" %}</div>
+            {% include_tmpl form.ask_text %}
+        </div>
+
+	    {% stripe_payments_element %}
+	
+    </div>
+
+</form>
+
+{% endblock %}

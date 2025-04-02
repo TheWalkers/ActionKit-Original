@@ -171,67 +171,7 @@ function initVZeroForForm(form_id, clientToken, is_ach, use_3d_secure, nonce, bi
 {% endonce %}
 {% endif %}
 {% if profile.payment_processor_information.processor == 'stripe' %}
-{% once %}
-<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-<script type="text/javascript">
-$(function() {
-    $('[data-stripe-pub-key] [name=card_num]').attr('data-stripe', 'number');
-    $('[data-stripe-pub-key] [name=exp_date]').attr('data-stripe', 'exp');
-    $('[data-stripe-pub-key] [name=card_code]').attr('data-stripe', 'cvc');
-});
-window.actionkitBeforeSubmit = function() {
-    var $form = $(actionkit.form);
-    // user can have non-stripe and stripe recurrings--don't interfere with
-    // non-stripe forms
-    var stripePubKey = $form.attr('data-stripe-pub-key');
-    if ( stripePubKey ) {
-        Stripe.setPublishableKey(stripePubKey)
-    }
-    else {
-        return;
-    }
-    // user might just be changing amount
-    if ( !$form.find('[name=card_num]').is(':visible') )
-        return;
-    
-    var $expField = $form.find('[name=exp_date]');
-    var exp = $expField.val();
-    // Stripe wants exp as 12/99 not 1299
-    exp = exp.replace(/[^0-9]/g, '').replace(/^([0-9][0-9])/, function(match) { return match + '/' });
-    $expField.val(exp);
-    try {
-        Stripe.card.createToken(actionkit.form, onStripeResponse);
-    } catch(e) {
-        // Stripe will throw (rather than return a failed response) for an
-        // out of range exp date month.
-        $expField.val(
-            $expField.val().replace('/', '')
-        );
-        alert('Sorry, we could not process your credit card information. Check your entries, such as your expiration date format, and try again.')
-        throw e;
-    }
-    return false;
-}
-function onStripeResponse(status, response) {
-    var $form = $(actionkit.form);
-    var $cardNumField = $form.find('[name=card_num]')
-    if ( response.error ) {
-        alert('We could not process your credit card information: ' + response.error.message);
-        $cardNumField.focus();
-        return;
-    }
-    $cardNumField.attr('disabled', true);
-    $cardNumField.after('<input type="hidden" name="card_num" value="token:' + response.id + '">')
-    // Stripe got exp_date in the format it wants, but set it back to the
-    // format ActionKit wants:
-    var $expField = $form.find('[name=exp_date]');
-    $expField.val(
-        $expField.val().replace('/', '')
-    );
-    actionkit.form.submit()
-}
-</script>
-{% endonce %}
+    {% stripe_recurring_update %}
 {% endif %}
 {% endfor %}
 
