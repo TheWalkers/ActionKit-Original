@@ -12,7 +12,7 @@
 <div class="ak-grid-row">
     <div class="ak-grid-col ak-grid-col-12-of-12">
         {% if not update %}
-            <h2>{{ page.title }}</h2>
+            {% block page_title %}<h2>{% include_tmpl page.title escaped %}</h2>{% endblock page_title %}
         {% else %}
             <h2>Update Event Information</h2>
         {% endif %}

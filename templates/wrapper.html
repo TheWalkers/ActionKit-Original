@@ -2,14 +2,14 @@
 <html lang="{{page.lang.iso_code|default:'en'}}"{% if page.lang.is_rtl %} dir="rtl"{% endif %}>
 <head>
     <meta charset="utf-8">
-    <title>{% block title %}{{ page.title }} | {% filter ak_text:"org_name" %}{% client_name %}{% endfilter %}{% endblock %}</title>
+    <title>{% block title %}{% include_tmpl page.title escaped %} | {% filter ak_text:"org_name" %}{% client_name %}{% endfilter %}{% endblock %}</title>
     <script>startTime=new Date()</script>
     <meta http-equiv="X-UA-Compatible" content="IE=edge;chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
     {% block share_metatags %}
-    {{ page.followup.share_title_tag }}
-    {{ page.followup.share_description_tag }}
+    {% if page.followup.share_title_value %}<meta property="og:title" content="{% include_tmpl page.followup.share_title_value escaped %}" />{% endif %}
+    {% if page.followup.share_description_value %}<meta property="og:description" content="{% include_tmpl page.followup.share_description_value escaped %}" />{% endif %}
     {{ page.followup.share_image_tag }}
     {{ page.followup.share_url_tag }}
     <meta property="og:site_name" content="{% filter ak_text:"org_name" %}{% client_name %}{% endfilter %}">
@@ -272,7 +272,7 @@
 
     <div class="ak-page-container">
 
-        {% block content %}{% endblock %}
+        {% block content %}{% block page_title %}<h2>{% include_tmpl page.title escaped %}</h2>{% endblock page_title %}{% endblock %}
 
         <div class="ak-page-footer">
             <div class="ak-page-footer-contents">

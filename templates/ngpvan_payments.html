@@ -25,7 +25,7 @@
     </div> 
     <div id="payments-content" class="ak-grid-row">
         <div class="ak-grid-col ak-grid-col-4-of-12">
-            <h2>{{ page.title }}</h2>
+            {% block page_title %}<h2>{% include_tmpl page.title escaped %}</h2>{% endblock page_title %}
             {% if page.custom_fields.featured_image %}
             <img class="ak-featured-img" src="{{page.custom_fields.featured_image}}">
             {% endif %}

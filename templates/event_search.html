@@ -16,7 +16,7 @@
 <div class="event-search ak-search-area">
     <div class="ak-grid-row">
         <div class="ak-grid-col ak-grid-col-12-of-12">
-            <h2>{{ page.title }} - Find an Event</h2>
+            {% block page_title %}{% include_tmpl page.title escaped %} - Find an Event{% endblock page_title %}
         </div>
     </div>
 
