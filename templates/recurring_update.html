@@ -46,6 +46,8 @@
         return false;
     }
 
+    var currentlyMountedStripeCard;
+
     function ak_recurring_change_card(profile_id) {
         var profile_el = $('#change_profile_' + profile_id);
         profile_el.find('.ak-show-cc').hide();
@@ -53,6 +55,21 @@
         profile_el.find('.ak-change-address').fadeIn();
         profile_el.find('.ak-change-submit').fadeIn();
         profile_el.find(':input').prop('disabled', false);
+        var thisProfileIsStripe = profile_el.attr('data-stripe-pub-key')
+        if (thisProfileIsStripe) {
+            // Unmount any other actives, then set active stripe and mount it
+            if (currentlyMountedStripeCard) {
+                cardElement.unmount('#card-element-' + currentlyMountedStripeCard);
+                var profile_to_hide = $('#change_profile_' + currentlyMountedStripeCard)
+                profile_to_hide.find('.ak-show-cc').show();
+                profile_to_hide.find('.ak-change-cc').not('.ak-business_name').hide();
+                profile_to_hide.find('.ak-change-address').hide();
+                profile_to_hide.find('.ak-change-submit').hide();
+                profile_to_hide.find(':input').prop('disabled', true);
+            }
+            currentlyMountedStripeCard = profile_id
+            cardElement.mount('#card-element-' + currentlyMountedStripeCard)
+        }
         return false;
     }
 
@@ -171,6 +188,32 @@ function initVZeroForForm(form_id, clientToken, is_ach, use_3d_secure, nonce, bi
 {% endonce %}
 {% endif %}
 {% if profile.payment_processor_information.processor == 'stripe' %}
+    {% once %}
+        <script src="https://js.stripe.com/v3/"></script>
+        <script type="text/javascript">
+            // Initialize Stripe
+            const stripe = Stripe('{{ stripe_publishable_key }}');
+            const elements = stripe.elements();
+            const cardElement = elements.create('card', {
+                style: {
+                    base: {
+                        fontFamily: '{{ templateset.custom_fields.font_family|default:"sans-serif"|safe }}',
+                        fontSize: '{{ templateset.custom_fields.font_size|default:"16px" }}',
+                        color: '#32325d',
+                        '::placeholder': {
+                            color: '#aab7c4'
+                        }
+                    },
+                    invalid: {
+                        color: '{{ templateset.custom_fields.color_error|default:"#fa755a" }}',
+                        iconColor: '{{ templateset.custom_fields.color_error|default:"#fa755a" }}'
+                    }
+                },
+                hidePostalCode: true,
+                hideIcon: false
+            });
+        </script>
+    {% endonce %}
     {% stripe_recurring_update %}
 {% endif %}
 {% endfor %}

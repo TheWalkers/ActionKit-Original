@@ -1,5 +1,5 @@
 {% with profile.payment_processor_information as pp %}
-<form id="change_profile_{{ profile.id }}" {% if pp.processor == "stripe" %}data-stripe-pub-key="{{ pp.pub_key }}"{% endif %} class="action_form" name="act_{{ profile.id }}" method="POST" action="/act/" accept-charset="utf-8" onsubmit="return true;">
+<form id="change_profile_{{ profile.id }}" {% if pp.processor == "stripe" %}data-stripe-pub-key="{{ stripe_publishable_key }}"{% endif %} class="action_form" name="act_{{ profile.id }}" method="POST" action="/act/" accept-charset="utf-8" onsubmit="return true;">
     <input type="hidden" name="page" value="{{ page.name }}">
     <input type="hidden" name="profile_id" value="{{ profile.id }}">
     {% comment %} akid is needed to tell javascript required field checking we have a user, but the view requires a user to be logged in. {% endcomment %}
@@ -78,10 +78,16 @@
             <label for="card_num_{{ profile.id }}">
                 Credit Card Number
             </label>
+            {% if profile.payment_processor_information.processor == 'stripe' %}
+            <div id="card-element-{{ profile.id }}" class="stripe-card-element"></div>
+            <div id="card-errors-{{ profile.id }}" class="stripe-card-errors" role="alert"></div>
+            {% else %}
             <input id="card_num_{{ profile.id }}" type="text" name="card_num" disabled=true>
             <div class="ak-card_num-hosted"></div>
+            {% endif %}
         </div>
         
+        {% if profile.payment_processor_information.processor != 'stripe' %}
         <div class="ak-change-cc" style="display: none">
             <label for="exp_date_{{ profile.id }}">
                 Expiration Date
@@ -97,6 +103,7 @@
             <input id="card_code_{{ profile.id }}" type="text" name="card_code" size="6"  style="max-width: 33%" disabled=true>
             <div class="ak-card_code-hosted"></div>
         </div>
+        {% endif %}
 
         {% endif %}
 
