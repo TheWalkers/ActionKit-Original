@@ -617,7 +617,7 @@
         var total = 0.0;
 
         product_infos().forEach(function(info) {
-            total += info.subtotal;
+            total += (info.subtotal > 0 ? info.subtotal : 0);
         });
 
         $('.ak_candidate_inputs').each(function (i) {
@@ -1176,6 +1176,7 @@
     function calculate_product_subtotals() {
         var subtotal = 0;
         product_infos().forEach(function(info) {
+            if (info.subtotal < 0) { info.subtotal = 0 }
             $('.ak_product_subtotal_' + info.id).text(info.subtotal.toFixed(2));
             subtotal += info.subtotal;
         });
