@@ -7,7 +7,7 @@
 
 {% block script_additions %}
     {{ super }}
-    {{ templateset.custom_fields.payments_script|safe }}
+    {% include_tmpl templateset.custom_fields.payments_script %}
 {% endblock %}
 
 {% block content %}

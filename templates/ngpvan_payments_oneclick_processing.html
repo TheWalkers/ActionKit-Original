@@ -1,0 +1,57 @@
+{% extends "wrapper.html" %}
+
+{% block content %}
+
+    <h2>Please wait ...</h2>
+
+    <style>
+        .pages .spinner--ak > div { background: #668d24; }
+        .spinner .spinner__item1 { animation-delay: -0.60s; }
+        .spinner .spinner__item2 { animation-delay: -0.40s; }
+        .spinner .spinner__item3 { animation-delay: -0.20s; }
+
+        .spinner {
+            margin: 0 auto 0;
+            width: 100px;
+            height: 14%;
+            text-align: center;
+        }
+
+        .spinner > div {
+            width: 14%;
+            height: 50%;
+            background-color: #668d24;
+            border-radius: 100%;
+            display: inline-block;
+            animation: sk-bouncedelay 1.7s infinite ease-in-out both;
+            margin-right: 5px;
+        }
+
+        @keyframes sk-bouncedelay {
+            0%, 80%, 100% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            } 
+        }
+
+        @keyframes spinner { to { transform: rotate(360deg); } }
+    </style>
+
+    <div class="spinner spinner--ak" style="width: 150px; height: 42px; margin: 66px auto 0">
+      <div class="spinner__item1"></div>
+      <div class="spinner__item2"></div>
+      <div class="spinner__item3"></div>
+      <div class="spinner__item4"></div>
+    </div>
+
+    {% comment %}
+        The above spinner and styling can be edited as you like,
+        but the stripe_oneclick_processing tag is required
+        for the oneclick processing to redirect to the expected page.
+    {% endcomment %}
+    {% stripe_oneclick_processing %}
+{% endblock content %}

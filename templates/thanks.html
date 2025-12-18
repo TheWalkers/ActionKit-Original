@@ -61,6 +61,32 @@
                 <option>Dr.</option>
               </select>
               <button type="submit" class="ak-submit-button">Update</button>
+            {% elif require_compliance_fields and not action.custom_fields.employer and not action.custom_fields.occupation %}
+                <fieldset>
+                    <legend>
+                        {% if page.custom_fields.ak_employer_occupation_followup_label %}
+                            {{ page.custom_fields.ak_employer_occupation_followup_label }}
+                        {% elif templateset.custom_fields.ak_employer_occupation_followup_label %}
+                            {{ templateset.custom_fields.ak_employer_occupation_followup_label }}
+                        {% else %}
+                            Thank you for your generous donation! Before you go, can you please quickly fill out your employer and occupation? We're required to ask for it.
+                        {% endif %}
+                    </legend>
+                    <div>
+                        <label for="action_employer">Employer</label>
+                        <input id="action_employer" type="text" name="action_employer" size="20" value="{{ action.user.custom_fields.employer }}">
+                        <input type="hidden" name="required" value="action_employer">
+                        <input id="user_employer" type="hidden" name="user_employer" size="20" value="{{ user.custom_fields.employer|default:'' }}">
+                    </div>
+
+                    <div>
+                        <label for="action_occupation">Occupation</label>
+                        <input id="action_occupation" type="text" name="action_occupation" size="20" value="{{ action.user.custom_fields.occupation }}">
+                        <input type="hidden" name="required" value="action_occupation">
+                        <input id="user_occupation" type="hidden" name="user_occupation" size="20" value="{{ user.custom_fields.occupation|default:'' }}">
+                    </div>
+                </fieldset>
+                <button type="submit" class="ak-submit-button">Submit</button>
             {% else %}
               {% include_tmpl form.thank_you_text %}
             {% endif %}
@@ -190,6 +216,12 @@
     actionkit.forms.contextRoot = '/context/';
     actionkit.forms.initTafForm('taf');
     actionkit.sharing.initShareTools();
+    $("#action_employer").on("change", function () {
+        $("#user_employer").val($("#action_employer").val())
+    })
+    $("#action_occupation").on("change", function () {
+        $("#user_occupation").val($("#action_occupation").val())
+    })
 </script>
 
 {% endblock %}
