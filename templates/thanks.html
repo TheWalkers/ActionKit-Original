@@ -64,10 +64,8 @@
             {% elif require_compliance_fields and not action.custom_fields.employer and not action.custom_fields.occupation %}
                 <fieldset>
                     <legend>
-                        {% if page.custom_fields.ak_employer_occupation_followup_label %}
-                            {{ page.custom_fields.ak_employer_occupation_followup_label }}
-                        {% elif templateset.custom_fields.ak_employer_occupation_followup_label %}
-                            {{ templateset.custom_fields.ak_employer_occupation_followup_label }}
+                        {% if page_or_templateset_custom_fields.ak_employer_occupation_followup_label %}
+                            {{ page_or_templateset_custom_fields.ak_employer_occupation_followup_label }}
                         {% else %}
                             Thank you for your generous donation! Before you go, can you please quickly fill out your employer and occupation? We're required to ask for it.
                         {% endif %}
@@ -87,8 +85,12 @@
                     </div>
                 </fieldset>
                 <button type="submit" class="ak-submit-button">Submit</button>
+                {% include_tmpl page_or_templateset_custom_fields.payments_css %}
+                {% include_tmpl page_or_templateset_custom_fields.thank_you_script %}
             {% else %}
               {% include_tmpl form.thank_you_text %}
+              {% include_tmpl page_or_templateset_custom_fields.payments_css %}
+              {% include_tmpl page_or_templateset_custom_fields.thank_you_script %}
             {% endif %}
             </div>
             {% include "./progress_meter.html" %}
