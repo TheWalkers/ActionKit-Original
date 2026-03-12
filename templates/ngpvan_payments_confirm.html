@@ -14,6 +14,7 @@
 <form id="act" name="act" class="ngpvan-payments" action="/admin/order/paypal_confirm/" method="POST" accept-charset="utf-8">
     <input type="hidden" name="action_id" value="{{ action.id }}">
     <input type="hidden" name="PayerID" value="{{ payer_id }}">
+    <input type="hidden" name="akid" value="{{ akid }}">
 
     <div id="payments-secured" class="ak-grid-row">
         <div class="ak-grid-col ak-grid-col-12-of-12">
