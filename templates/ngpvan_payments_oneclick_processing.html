@@ -1,8 +1,18 @@
 {% extends "wrapper.html" %}
 
+{% block css_additions %}
+    {{ super }}
+    {% include_tmpl page_or_templateset_custom_fields.payments_css %}
+{% endblock css_additions %}
+
+{% block script_additions %}
+    {{ super }}
+    {% include_tmpl page_or_templateset_custom_fields.payments_script %}
+{% endblock %}
+
 {% block content %}
 
-    <h2>Please wait ...</h2>
+    <h2 id="please-wait-text">Please wait ...</h2>
 
     <style>
         .pages .spinner--ak > div { background: #668d24; }

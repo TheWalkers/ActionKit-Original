@@ -2,12 +2,12 @@
 
 {% block css_additions %}
     {{ super }}
-    {{ templateset.custom_fields.payments_css|safe }}
+    {% include_tmpl page_or_templateset_custom_fields.payments_css %}
 {% endblock %}
 
 {% block script_additions %}
     {{ super }}
-    {% include_tmpl templateset.custom_fields.payments_script %}
+    {% include_tmpl page_or_templateset_custom_fields.payments_script %}
 {% endblock %}
 
 {% block content %}
