@@ -48,7 +48,7 @@
         <ul class="ak-margin-none">
             {% for profile in recurring_donations %}
             <li>
-                <strong>{{ profile.amt }}</strong> a {{ profile.inverse_period_display|lower }}, started on {{ profile.created_at|date:"m/d/Y" }}. 
+                <strong>{{ profile.amt }}</strong> a {{ profile.inverse_period_display|lower }}, started on {{ profile.created_at|date:"m/d/Y" }}{% if profile.end_date %}, until {{ profile.end_date|date:"m/d/Y" }}{% endif %}.
                 You've given a total of {{ profile.payment_total_amt }}. 
                 {% if profile.is_active and not profile.is_import_stub %}
                     {% if profile.order.payment_method != "paypal" %}

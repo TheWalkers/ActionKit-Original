@@ -61,7 +61,7 @@
                 <option>Dr.</option>
               </select>
               <button type="submit" class="ak-submit-button">Update</button>
-            {% elif require_compliance_fields and not action.custom_fields.employer and not action.custom_fields.occupation %}
+            {% elif require_compliance_fields and not show_payments_modal and not action.custom_fields.employer and not action.custom_fields.occupation %}
                 <fieldset>
                     <legend>
                         {% if page_or_templateset_custom_fields.ak_employer_occupation_followup_label %}
@@ -194,6 +194,8 @@
 {% endif %}
 
 </form>
+
+{% if show_payments_modal %}{% thanks_modal %}{% endif %}
 
 {% endblock %}
 

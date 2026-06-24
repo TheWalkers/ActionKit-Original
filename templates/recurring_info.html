@@ -56,7 +56,20 @@
                 </div>
             </div>
         </div>
-        
+
+{% if profile.end_date %}
+        <div>
+            <label>
+                End Date
+            </label>
+            <div class="ak-readonly-value">
+                <div>
+                    {{ profile.end_date|date }}
+                </div>
+            </div>
+        </div>
+{% endif %}
+
         {% if profile.order.payment_method == "cc" %}
         <div class="ak-show-cc">
             <label>
