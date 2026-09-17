@@ -3,6 +3,11 @@
 {% block css_additions %}
     {{ super }}
     {% include_tmpl page_or_templateset_custom_fields.payments_css %}
+    <link rel="preconnect" href="https://js.stripe.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preconnect" href="https://ajax.googleapis.com">
+    <link rel="preconnect" href="https://api.hcaptcha.com">
 {% endblock %}
 
 {% block script_additions %}
@@ -29,7 +34,7 @@
             {% if page.custom_fields.featured_image %}
             <img class="ak-featured-img" src="{{page.custom_fields.featured_image}}">
             {% endif %}
-            <div>{% include "./progress_meter.html" %}</div>
+            {% if page.goal %}<div>{% include "./progress_meter.html" %}</div>{% endif %}
             {% include_tmpl form.ask_text %}
         </div>
 
