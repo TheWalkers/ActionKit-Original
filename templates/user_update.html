@@ -18,7 +18,7 @@
         <h2>Update Your Account</h2>
         {% if user %}
         <p>
-            {% filter ak_text:"logged_in_as" %}You are logged in as{% endfilter %} <a href="/me/">{{ user.name|escape }}</a>.
+            {% filter ak_text:"logged_in_as" %}You are logged in as{% endfilter %} <a href="/me/">{{ user.name|default:user.email|escape }}</a>.
             <a href="/logout">{% filter ak_text:"logout" %}Log out{% endfilter %}</a>
         </p>
         {% endif %}
@@ -96,4 +96,3 @@
 </script>
 
 {% endblock content %}
-
